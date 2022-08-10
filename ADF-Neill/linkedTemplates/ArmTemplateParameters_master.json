@@ -5,6 +5,12 @@
 		"factoryName": {
 			"value": "ADF-Neill"
 		},
+		"datalakestoragenk_accountKey": {
+			"value": ""
+		},
+		"datalakestoragenk_properties_typeProperties_url": {
+			"value": "https://datalakestoragenk.dfs.core.windows.net/"
+		},
 		"containerUri": {
 			"value": ""
 		},
