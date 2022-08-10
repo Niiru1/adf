@@ -26,7 +26,19 @@
 					"name": "MoreAggs"
 				},
 				{
+					"name": "SelectCopy"
+				},
+				{
+					"name": "ValueDistAgg"
+				},
+				{
+					"name": "UniqDist"
+				},
+				{
 					"name": "SummaryStats"
+				},
+				{
+					"name": "Join1"
 				}
 			],
 			"scriptLines": [
@@ -51,10 +63,29 @@
 				"     ),",
 				"     skipDuplicateMapInputs: true,",
 				"     skipDuplicateMapOutputs: true) ~> MoreAggs",
+				"MoreAggs select(mapColumn(",
+				"          movie,",
+				"          title,",
+				"          genres,",
+				"          year,",
+				"          Rating,",
+				"          RottenTomato",
+				"     ),",
+				"     skipDuplicateMapInputs: true,",
+				"     skipDuplicateMapOutputs: true) ~> SelectCopy",
+				"SelectCopy aggregate(groupBy(title),",
+				"     countunique = count()) ~> ValueDistAgg",
+				"ValueDistAgg aggregate(numofunique = countIf(countunique==1),",
+				"          numofdistinct = countDistinct(title)) ~> UniqDist",
 				"Movies aggregate(each(match(true()), $$+'_NotNull' = countIf(!isNull($$)), $$+'_Null' = countIf(!isNull($$))),",
 				"          each(match(type=='double'||type=='integer'||type=='short'||type=='decimal'), $$+'_stddev' = round(stddev($$),2), $$+'_min' = min($$), $$+'_max' = max($$), $$+'_average' = round(avg($$),2), $$+'_variance' = round(variance($$),2)),",
 				"          each(match(type=='string'), $$+'_maxLength' = max(length($$)))) ~> SummaryStats",
-				"SummaryStats sink(allowSchemaDrift: true,",
+				"SummaryStats, UniqDist join((movie_NotNull-movie_NotNull) == (numofunique-numofunique),",
+				"     joinType:'cross',",
+				"     matchType:'exact',",
+				"     ignoreSpaces: false,",
+				"     broadcast: 'auto')~> Join1",
+				"Join1 sink(allowSchemaDrift: true,",
 				"     validateSchema: false,",
 				"     umask: 0022,",
 				"     preCommands: [],",
