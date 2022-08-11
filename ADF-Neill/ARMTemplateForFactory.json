@@ -337,6 +337,39 @@
 						},
 						{
 							"name": "DerivedColumn1"
+						},
+						{
+							"name": "alterRow1"
+						},
+						{
+							"name": "RowCount"
+						},
+						{
+							"name": "DistinctRows"
+						},
+						{
+							"name": "LookForNULLs"
+						},
+						{
+							"name": "DerivedColumn"
+						},
+						{
+							"name": "SurrogateKey"
+						},
+						{
+							"name": "Window1"
+						},
+						{
+							"name": "KeyPatternDistinctCountAllCol"
+						},
+						{
+							"name": "SurrogateKey1"
+						},
+						{
+							"name": "DerivedColumn3"
+						},
+						{
+							"name": "leadAndLag"
 						}
 					],
 					"scriptLines": [
@@ -384,7 +417,32 @@
 						"     ignoreSpaces: false,",
 						"     broadcast: 'auto')~> Join1",
 						"UniqDist derive(DWhash = sha1(numofunique,numofdistinct)) ~> DerivedColumn1",
-						"Join1 sink(allowSchemaDrift: true,",
+						"Movies alterRow(upsertIf(true())) ~> alterRow1",
+						"alterRow1 aggregate(updates = countIf(isUpdate(), 1),",
+						"          inserts = countIf(isInsert(), 1),",
+						"          upserts = countIf(isUpsert(), 1),",
+						"          deletes = countIf(isDelete(),1)) ~> RowCount",
+						"Movies aggregate(groupBy(mycols = sha2(256,columns())),",
+						"     each(match(true()), $$ = first($$))) ~> DistinctRows",
+						"Movies split(contains(array(toString(columns())),isNull(#item)),",
+						"     disjoint: false) ~> LookForNULLs@(hasNULLs, noNULLs)",
+						"Movies derive(dummy = 1) ~> DerivedColumn",
+						"DerivedColumn keyGenerate(output(sk as long),",
+						"     startAt: 1L,",
+						"     stepValue: 1L) ~> SurrogateKey",
+						"SurrogateKey window(over(dummy),",
+						"     asc(sk, true),",
+						"     Rating2 = coalesce(Rating, last(Rating, true()))) ~> Window1",
+						"Window1 aggregate(each(match(true()), $$ = countDistinct($$))) ~> KeyPatternDistinctCountAllCol",
+						"Window1 keyGenerate(output(sk as long),",
+						"     startAt: 1L,",
+						"     stepValue: 1L) ~> SurrogateKey1",
+						"SurrogateKey1 derive(dummy = 1) ~> DerivedColumn3",
+						"DerivedColumn3 window(over(dummy),",
+						"     asc(sk, true),",
+						"     prevAndCurr = lag(title,1)+'-'+last(title),",
+						"          nextAndCurr = lead(title,1)+'-'+last(title)) ~> leadAndLag",
+						"leadAndLag sink(allowSchemaDrift: true,",
 						"     validateSchema: false,",
 						"     umask: 0022,",
 						"     preCommands: [],",
