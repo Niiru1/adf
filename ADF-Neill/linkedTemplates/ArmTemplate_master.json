@@ -11,6 +11,14 @@
 			"type": "secureString",
 			"metadata": "Secure string for 'accountKey' of 'datalakestoragenk'"
 		},
+		"EmployeeInput_connectionString": {
+			"type": "secureString",
+			"metadata": "Secure string for 'connectionString' of 'EmployeeInput'"
+		},
+		"AzureSqlDatabase1_connectionString": {
+			"type": "secureString",
+			"metadata": "Secure string for 'connectionString' of 'AzureSqlDatabase1'"
+		},
 		"datalakestoragenk_properties_typeProperties_url": {
 			"type": "string",
 			"defaultValue": "https://datalakestoragenk.dfs.core.windows.net/"
@@ -44,6 +52,12 @@
 					},
 					"datalakestoragenk_accountKey": {
 						"value": "[parameters('datalakestoragenk_accountKey')]"
+					},
+					"EmployeeInput_connectionString": {
+						"value": "[parameters('EmployeeInput_connectionString')]"
+					},
+					"AzureSqlDatabase1_connectionString": {
+						"value": "[parameters('AzureSqlDatabase1_connectionString')]"
 					},
 					"datalakestoragenk_properties_typeProperties_url": {
 						"value": "[parameters('datalakestoragenk_properties_typeProperties_url')]"

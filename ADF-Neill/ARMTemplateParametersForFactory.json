@@ -8,6 +8,12 @@
 		"datalakestoragenk_accountKey": {
 			"value": ""
 		},
+		"EmployeeInput_connectionString": {
+			"value": ""
+		},
+		"AzureSqlDatabase1_connectionString": {
+			"value": ""
+		},
 		"datalakestoragenk_properties_typeProperties_url": {
 			"value": "https://datalakestoragenk.dfs.core.windows.net/"
 		}

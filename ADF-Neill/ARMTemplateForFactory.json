@@ -11,6 +11,14 @@
 			"type": "secureString",
 			"metadata": "Secure string for 'accountKey' of 'datalakestoragenk'"
 		},
+		"EmployeeInput_connectionString": {
+			"type": "secureString",
+			"metadata": "Secure string for 'connectionString' of 'EmployeeInput'"
+		},
+		"AzureSqlDatabase1_connectionString": {
+			"type": "secureString",
+			"metadata": "Secure string for 'connectionString' of 'AzureSqlDatabase1'"
+		},
 		"datalakestoragenk_properties_typeProperties_url": {
 			"type": "string",
 			"defaultValue": "https://datalakestoragenk.dfs.core.windows.net/"
@@ -553,6 +561,896 @@
 			"dependsOn": [
 				"[concat(variables('factoryId'), '/datasets/MoviesDB')]",
 				"[concat(variables('factoryId'), '/datasets/MoviesSink')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/EmployeeInput')]",
+			"type": "Microsoft.DataFactory/factories/linkedServices",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"annotations": [],
+				"type": "AzureBlobStorage",
+				"typeProperties": {
+					"connectionString": "[parameters('EmployeeInput_connectionString')]"
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/Attributions_Raw_Csv')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "datalakestoragenk",
+					"type": "LinkedServiceReference"
+				},
+				"annotations": [],
+				"type": "DelimitedText",
+				"typeProperties": {
+					"location": {
+						"type": "AzureBlobFSLocation",
+						"fileName": "Attributions-2022-07-09-04-16-36-modified.csv",
+						"folderPath": "data",
+						"fileSystem": "testcontainer"
+					},
+					"columnDelimiter": ",",
+					"escapeChar": "\\",
+					"firstRowAsHeader": true,
+					"quoteChar": "\""
+				},
+				"schema": [
+					{
+						"name": "Incident Category Group",
+						"type": "String"
+					},
+					{
+						"name": "Incident Category Group Description",
+						"type": "String"
+					},
+					{
+						"name": "Responsible Organisation Full Name",
+						"type": "String"
+					},
+					{
+						"name": "Responsible Type",
+						"type": "String"
+					},
+					{
+						"name": "Route",
+						"type": "String"
+					},
+					{
+						"name": "Route Name",
+						"type": "String"
+					},
+					{
+						"name": "Area",
+						"type": "String"
+					},
+					{
+						"name": "Area Abbrev",
+						"type": "String"
+					},
+					{
+						"name": "Area Name",
+						"type": "String"
+					},
+					{
+						"name": "Area Role Abbrev",
+						"type": "String"
+					},
+					{
+						"name": "Area Role Name",
+						"type": "String"
+					},
+					{
+						"name": "Incident Number",
+						"type": "String"
+					},
+					{
+						"name": "Incident Create Date",
+						"type": "String"
+					},
+					{
+						"name": "Incident Description",
+						"type": "String"
+					},
+					{
+						"name": "Incident Type",
+						"type": "String"
+					},
+					{
+						"name": "Incident Start Datetime",
+						"type": "String"
+					},
+					{
+						"name": "Incident End Datetime",
+						"type": "String"
+					},
+					{
+						"name": "Incident Close Datetime",
+						"type": "String"
+					},
+					{
+						"name": "Incident Duration",
+						"type": "String"
+					},
+					{
+						"name": "Incident Status",
+						"type": "String"
+					},
+					{
+						"name": "Incident New Flag",
+						"type": "String"
+					},
+					{
+						"name": "Section Start Code",
+						"type": "String"
+					},
+					{
+						"name": "Section End Code",
+						"type": "String"
+					},
+					{
+						"name": "Attribution Area Code",
+						"type": "String"
+					},
+					{
+						"name": "Attribution Area Description",
+						"type": "String"
+					},
+					{
+						"name": "Incident Reason Type Name",
+						"type": "String"
+					},
+					{
+						"name": "Incident Category",
+						"type": "String"
+					},
+					{
+						"name": "Incident Category Description",
+						"type": "String"
+					},
+					{
+						"name": "Incident Reason",
+						"type": "String"
+					},
+					{
+						"name": "Incident Reason Name",
+						"type": "String"
+					},
+					{
+						"name": "Incident Reason Description",
+						"type": "String"
+					},
+					{
+						"name": "Performance Event Group",
+						"type": "String"
+					},
+					{
+						"name": "Performance Event Code",
+						"type": "String"
+					},
+					{
+						"name": "Performance Event Name",
+						"type": "String"
+					},
+					{
+						"name": "Start Stanox",
+						"type": "String"
+					},
+					{
+						"name": "End Stanox",
+						"type": "String"
+					},
+					{
+						"name": "Operator - Resp",
+						"type": "String"
+					},
+					{
+						"name": "Operator Type - Resp",
+						"type": "String"
+					},
+					{
+						"name": "Operator Franchised - Resp",
+						"type": "String"
+					},
+					{
+						"name": "Operator Holding Company - Resp",
+						"type": "String"
+					},
+					{
+						"name": "Operator Name - Resp",
+						"type": "String"
+					},
+					{
+						"name": "Operator Full Name - Resp",
+						"type": "String"
+					},
+					{
+						"name": "Service Group Type - Resp",
+						"type": "String"
+					},
+					{
+						"name": "Service Group Code - Resp",
+						"type": "String"
+					},
+					{
+						"name": "Service Group Description - Resp",
+						"type": "String"
+					},
+					{
+						"name": "TSC - Resp",
+						"type": "String"
+					},
+					{
+						"name": "TSC Description - Resp",
+						"type": "String"
+					},
+					{
+						"name": "TSC PfPI Flag - Resp",
+						"type": "String"
+					},
+					{
+						"name": "Headcode - Resp",
+						"type": "String"
+					},
+					{
+						"name": "Train ID - Resp",
+						"type": "String"
+					},
+					{
+						"name": "Punctuality Threshold - Resp",
+						"type": "String"
+					},
+					{
+						"name": "Train Service Perf Value - Resp",
+						"type": "String"
+					},
+					{
+						"name": "Train Class Code - Resp",
+						"type": "String"
+					},
+					{
+						"name": "Train Class Description - Resp",
+						"type": "String"
+					},
+					{
+						"name": "Train Class PfPI Flag - Resp",
+						"type": "String"
+					},
+					{
+						"name": "Planned Dest Location Code - Resp",
+						"type": "String"
+					},
+					{
+						"name": "Planned Origin Location Code - Resp",
+						"type": "String"
+					},
+					{
+						"name": "Planned Origin WTT Datetime - Resp",
+						"type": "String"
+					},
+					{
+						"name": "Planned Dest GBTT Datetime - Resp",
+						"type": "String"
+					},
+					{
+						"name": "Operator Holding Company - Affected",
+						"type": "String"
+					},
+					{
+						"name": "Operator Type - Affected",
+						"type": "String"
+					},
+					{
+						"name": "Operator - Affected",
+						"type": "String"
+					},
+					{
+						"name": "Operator Name - Affected",
+						"type": "String"
+					},
+					{
+						"name": "Operator Full Name - Affected",
+						"type": "String"
+					},
+					{
+						"name": "Operator Franchised - Affected",
+						"type": "String"
+					},
+					{
+						"name": "Service Group Code - Affected",
+						"type": "String"
+					},
+					{
+						"name": "Service Group Description - Affected",
+						"type": "String"
+					},
+					{
+						"name": "Service Group Type - Affected",
+						"type": "String"
+					},
+					{
+						"name": "Punctuality Threshold - Affected",
+						"type": "String"
+					},
+					{
+						"name": "TSC - Affected",
+						"type": "String"
+					},
+					{
+						"name": "TSC Description - Affected",
+						"type": "String"
+					},
+					{
+						"name": "TSC PfPI Flag - Affected",
+						"type": "String"
+					},
+					{
+						"name": "Train ID - Affected",
+						"type": "String"
+					},
+					{
+						"name": "Train Class Code - Affected",
+						"type": "String"
+					},
+					{
+						"name": "Train Class Description - Affected",
+						"type": "String"
+					},
+					{
+						"name": "Train Class PfPI Flag - Affected",
+						"type": "String"
+					},
+					{
+						"name": "Headcode - Affected",
+						"type": "String"
+					},
+					{
+						"name": "Planned Dest Actual Datetime - Affected",
+						"type": "String"
+					},
+					{
+						"name": "Planned Dest GBTT Datetime - Affected",
+						"type": "String"
+					},
+					{
+						"name": "Planned Dest Location Code - Affected",
+						"type": "String"
+					},
+					{
+						"name": "Planned Dest WTT Datetime - Affected",
+						"type": "String"
+					},
+					{
+						"name": "Planned Origin Location Code - Affected",
+						"type": "String"
+					},
+					{
+						"name": "Planned Origin Actual Datetime - Affected",
+						"type": "String"
+					},
+					{
+						"name": "Planned Origin WTT Datetime - Affected",
+						"type": "String"
+					},
+					{
+						"name": "Operator Type - React",
+						"type": "String"
+					},
+					{
+						"name": "Operator Franchised - React",
+						"type": "String"
+					},
+					{
+						"name": "Operator - React",
+						"type": "String"
+					},
+					{
+						"name": "Operator Holding Company - React",
+						"type": "String"
+					},
+					{
+						"name": "Operator Name - React",
+						"type": "String"
+					},
+					{
+						"name": "Operator Full Name - React",
+						"type": "String"
+					},
+					{
+						"name": "Train Class Code - React",
+						"type": "String"
+					},
+					{
+						"name": "Train Class Description - React",
+						"type": "String"
+					},
+					{
+						"name": "Train Class PfPI Flag - React",
+						"type": "String"
+					},
+					{
+						"name": "TSC - React",
+						"type": "String"
+					},
+					{
+						"name": "TSC Description - React",
+						"type": "String"
+					},
+					{
+						"name": "TSC PfPI Flag - React",
+						"type": "String"
+					},
+					{
+						"name": "Service Group Type - React",
+						"type": "String"
+					},
+					{
+						"name": "Service Group Code - React",
+						"type": "String"
+					},
+					{
+						"name": "Service Group Description - React",
+						"type": "String"
+					},
+					{
+						"name": "Headcode - React",
+						"type": "String"
+					},
+					{
+						"name": "Train ID - React",
+						"type": "String"
+					},
+					{
+						"name": "Punctuality Threshold - React",
+						"type": "String"
+					},
+					{
+						"name": "Reactionary Category Super Group Name",
+						"type": "String"
+					},
+					{
+						"name": "Reactionary Category Group Description",
+						"type": "String"
+					},
+					{
+						"name": "Reactionary Category Code",
+						"type": "String"
+					},
+					{
+						"name": "Reactionary Category Description",
+						"type": "String"
+					},
+					{
+						"name": "Reactionary Reason Code",
+						"type": "String"
+					},
+					{
+						"name": "Reactionary Reason Name",
+						"type": "String"
+					},
+					{
+						"name": "Reactionary Reason Description",
+						"type": "String"
+					},
+					{
+						"name": "PfPI Minutes",
+						"type": "String"
+					},
+					{
+						"name": "PfPI Costs",
+						"type": "String"
+					},
+					{
+						"name": "Attributed Minutes",
+						"type": "String"
+					},
+					{
+						"name": "Attributed Cost",
+						"type": "String"
+					},
+					{
+						"name": "Event Datetime",
+						"type": "String"
+					},
+					{
+						"name": "Financial Year",
+						"type": "String"
+					},
+					{
+						"name": "Financial Period Number",
+						"type": "String"
+					},
+					{
+						"name": "Planned Origin WTT Datetime - React",
+						"type": "String"
+					}
+				]
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/datalakestoragenk')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/Attributions_Area_DataTransformation')]",
+			"type": "Microsoft.DataFactory/factories/dataflows",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"type": "MappingDataFlow",
+				"typeProperties": {
+					"sources": [
+						{
+							"dataset": {
+								"referenceName": "Attributions_Raw_Csv",
+								"type": "DatasetReference"
+							},
+							"name": "Raw"
+						},
+						{
+							"dataset": {
+								"referenceName": "AreaRoleDataMart",
+								"type": "DatasetReference"
+							},
+							"name": "AreaRoleDataMart"
+						},
+						{
+							"dataset": {
+								"referenceName": "AreaRoleDataMart",
+								"type": "DatasetReference"
+							},
+							"name": "AreaCurated"
+						}
+					],
+					"sinks": [
+						{
+							"dataset": {
+								"referenceName": "Attributions_Sink",
+								"type": "DatasetReference"
+							},
+							"name": "CuratedFullArea"
+						},
+						{
+							"dataset": {
+								"referenceName": "Attributions_Sink",
+								"type": "DatasetReference"
+							},
+							"name": "CuratedSnapshot"
+						}
+					],
+					"transformations": [
+						{
+							"name": "FilterEmptyRows"
+						},
+						{
+							"name": "SelectArea"
+						},
+						{
+							"name": "JoinAggregateAreaId"
+						},
+						{
+							"name": "AggregateAreaId"
+						},
+						{
+							"name": "SelectDistinctArea"
+						},
+						{
+							"name": "LookupExisting"
+						},
+						{
+							"name": "FilterOutExisting"
+						},
+						{
+							"name": "SelectFilteredArea"
+						},
+						{
+							"name": "AddSurrogateKey"
+						},
+						{
+							"name": "BaselineSurrogateKey"
+						},
+						{
+							"name": "SelectAreas"
+						},
+						{
+							"name": "UnionExisting"
+						}
+					],
+					"scriptLines": [
+						"source(output(",
+						"          {Incident Category Group} as string,",
+						"          {Incident Category Group Description} as string,",
+						"          {Responsible Organisation Full Name} as string,",
+						"          {Responsible Type} as string,",
+						"          Route as string,",
+						"          {Route Name} as string,",
+						"          Area as string,",
+						"          {Area Abbrev} as string,",
+						"          {Area Name} as string,",
+						"          {Area Role Abbrev} as string,",
+						"          {Area Role Name} as string,",
+						"          {Incident Number} as string,",
+						"          {Incident Create Date} as string,",
+						"          {Incident Description} as string,",
+						"          {Incident Type} as string,",
+						"          {Incident Start Datetime} as string,",
+						"          {Incident End Datetime} as string,",
+						"          {Incident Close Datetime} as string,",
+						"          {Incident Duration} as string,",
+						"          {Incident Status} as string,",
+						"          {Incident New Flag} as string,",
+						"          {Section Start Code} as string,",
+						"          {Section End Code} as string,",
+						"          {Attribution Area Code} as string,",
+						"          {Attribution Area Description} as string,",
+						"          {Incident Reason Type Name} as string,",
+						"          {Incident Category} as string,",
+						"          {Incident Category Description} as string,",
+						"          {Incident Reason} as string,",
+						"          {Incident Reason Name} as string,",
+						"          {Incident Reason Description} as string,",
+						"          {Performance Event Group} as string,",
+						"          {Performance Event Code} as string,",
+						"          {Performance Event Name} as string,",
+						"          {Start Stanox} as string,",
+						"          {End Stanox} as string,",
+						"          {Operator - Resp} as string,",
+						"          {Operator Type - Resp} as string,",
+						"          {Operator Franchised - Resp} as string,",
+						"          {Operator Holding Company - Resp} as string,",
+						"          {Operator Name - Resp} as string,",
+						"          {Operator Full Name - Resp} as string,",
+						"          {Service Group Type - Resp} as string,",
+						"          {Service Group Code - Resp} as string,",
+						"          {Service Group Description - Resp} as string,",
+						"          {TSC - Resp} as string,",
+						"          {TSC Description - Resp} as string,",
+						"          {TSC PfPI Flag - Resp} as string,",
+						"          {Headcode - Resp} as string,",
+						"          {Train ID - Resp} as string,",
+						"          {Punctuality Threshold - Resp} as string,",
+						"          {Train Service Perf Value - Resp} as string,",
+						"          {Train Class Code - Resp} as string,",
+						"          {Train Class Description - Resp} as string,",
+						"          {Train Class PfPI Flag - Resp} as string,",
+						"          {Planned Dest Location Code - Resp} as string,",
+						"          {Planned Origin Location Code - Resp} as string,",
+						"          {Planned Origin WTT Datetime - Resp} as string,",
+						"          {Planned Dest GBTT Datetime - Resp} as string,",
+						"          {Operator Holding Company - Affected} as string,",
+						"          {Operator Type - Affected} as string,",
+						"          {Operator - Affected} as string,",
+						"          {Operator Name - Affected} as string,",
+						"          {Operator Full Name - Affected} as string,",
+						"          {Operator Franchised - Affected} as string,",
+						"          {Service Group Code - Affected} as string,",
+						"          {Service Group Description - Affected} as string,",
+						"          {Service Group Type - Affected} as string,",
+						"          {Punctuality Threshold - Affected} as string,",
+						"          {TSC - Affected} as string,",
+						"          {TSC Description - Affected} as string,",
+						"          {TSC PfPI Flag - Affected} as string,",
+						"          {Train ID - Affected} as string,",
+						"          {Train Class Code - Affected} as string,",
+						"          {Train Class Description - Affected} as string,",
+						"          {Train Class PfPI Flag - Affected} as string,",
+						"          {Headcode - Affected} as string,",
+						"          {Planned Dest Actual Datetime - Affected} as string,",
+						"          {Planned Dest GBTT Datetime - Affected} as string,",
+						"          {Planned Dest Location Code - Affected} as string,",
+						"          {Planned Dest WTT Datetime - Affected} as string,",
+						"          {Planned Origin Location Code - Affected} as string,",
+						"          {Planned Origin Actual Datetime - Affected} as string,",
+						"          {Planned Origin WTT Datetime - Affected} as string,",
+						"          {Operator Type - React} as string,",
+						"          {Operator Franchised - React} as string,",
+						"          {Operator - React} as string,",
+						"          {Operator Holding Company - React} as string,",
+						"          {Operator Name - React} as string,",
+						"          {Operator Full Name - React} as string,",
+						"          {Train Class Code - React} as string,",
+						"          {Train Class Description - React} as string,",
+						"          {Train Class PfPI Flag - React} as string,",
+						"          {TSC - React} as string,",
+						"          {TSC Description - React} as string,",
+						"          {TSC PfPI Flag - React} as string,",
+						"          {Service Group Type - React} as string,",
+						"          {Service Group Code - React} as string,",
+						"          {Service Group Description - React} as string,",
+						"          {Headcode - React} as string,",
+						"          {Train ID - React} as string,",
+						"          {Punctuality Threshold - React} as string,",
+						"          {Reactionary Category Super Group Name} as string,",
+						"          {Reactionary Category Group Description} as string,",
+						"          {Reactionary Category Code} as string,",
+						"          {Reactionary Category Description} as string,",
+						"          {Reactionary Reason Code} as string,",
+						"          {Reactionary Reason Name} as string,",
+						"          {Reactionary Reason Description} as string,",
+						"          {PfPI Minutes} as string,",
+						"          {PfPI Costs} as string,",
+						"          {Attributed Minutes} as string,",
+						"          {Attributed Cost} as string,",
+						"          {Event Datetime} as string,",
+						"          {Financial Year} as string,",
+						"          {Financial Period Number} as string,",
+						"          {Planned Origin WTT Datetime - React} as string",
+						"     ),",
+						"     allowSchemaDrift: true,",
+						"     validateSchema: false,",
+						"     ignoreNoFilesFound: false) ~> Raw",
+						"source(output(",
+						"          AreaRoleId as string,",
+						"          Code as string,",
+						"          Abbreviation as string,",
+						"          Name as string",
+						"     ),",
+						"     allowSchemaDrift: true,",
+						"     validateSchema: false,",
+						"     ignoreNoFilesFound: false) ~> AreaRoleDataMart",
+						"source(output(",
+						"          AreaRoleId as string,",
+						"          Code as string,",
+						"          Abbreviation as string,",
+						"          Name as string",
+						"     ),",
+						"     allowSchemaDrift: true,",
+						"     validateSchema: false,",
+						"     ignoreNoFilesFound: false) ~> AreaCurated",
+						"Raw filter(!isNull({Event Datetime})) ~> FilterEmptyRows",
+						"FilterEmptyRows select(mapColumn(",
+						"          Code = Area,",
+						"          Abbreviation = {Area Abbrev},",
+						"          Name = {Area Name}",
+						"     ),",
+						"     skipDuplicateMapInputs: true,",
+						"     skipDuplicateMapOutputs: true) ~> SelectArea",
+						"SelectArea, AggregateAreaId join(1==1,",
+						"     joinType:'cross',",
+						"     matchType:'exact',",
+						"     ignoreSpaces: false,",
+						"     broadcast: 'auto')~> JoinAggregateAreaId",
+						"AreaRoleDataMart aggregate(MaxAreaId = toInteger(max(AreaRoleId))) ~> AggregateAreaId",
+						"JoinAggregateAreaId aggregate(groupBy(Code),",
+						"     MaxAreaId = max(MaxAreaId),",
+						"          Abbreviation = max(Abbreviation),",
+						"          Name = max(Name)) ~> SelectDistinctArea",
+						"SelectDistinctArea, AreaRoleDataMart lookup(SelectDistinctArea@Code == AreaRoleDataMart@Code,",
+						"     multiple: false,",
+						"     pickup: 'any',",
+						"     broadcast: 'auto')~> LookupExisting",
+						"LookupExisting filter(isNull(AreaRoleId)) ~> FilterOutExisting",
+						"FilterOutExisting select(mapColumn(",
+						"          MaxAreaId,",
+						"          Code = SelectDistinctArea@Code,",
+						"          Abbreviation = SelectDistinctArea@Abbreviation,",
+						"          Name = SelectDistinctArea@Name",
+						"     ),",
+						"     skipDuplicateMapInputs: true,",
+						"     skipDuplicateMapOutputs: true) ~> SelectFilteredArea",
+						"SelectFilteredArea keyGenerate(output(SurrogateKey as long),",
+						"     startAt: 1L,",
+						"     stepValue: 1L) ~> AddSurrogateKey",
+						"AddSurrogateKey derive(AreaId = toInteger(SurrogateKey) + toInteger(coalesce(MaxAreaId, 0))) ~> BaselineSurrogateKey",
+						"BaselineSurrogateKey select(mapColumn(",
+						"          AreaId,",
+						"          Code,",
+						"          Abbreviation,",
+						"          Name",
+						"     ),",
+						"     skipDuplicateMapInputs: true,",
+						"     skipDuplicateMapOutputs: true) ~> SelectAreas",
+						"SelectAreas, AreaCurated union(byName: true)~> UnionExisting",
+						"UnionExisting sink(allowSchemaDrift: true,",
+						"     validateSchema: false,",
+						"     umask: 0022,",
+						"     preCommands: [],",
+						"     postCommands: [],",
+						"     skipDuplicateMapInputs: true,",
+						"     skipDuplicateMapOutputs: true) ~> CuratedFullArea",
+						"SelectAreas sink(allowSchemaDrift: true,",
+						"     validateSchema: false,",
+						"     umask: 0022,",
+						"     preCommands: [],",
+						"     postCommands: [],",
+						"     skipDuplicateMapInputs: true,",
+						"     skipDuplicateMapOutputs: true) ~> CuratedSnapshot"
+					]
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/datasets/Attributions_Raw_Csv')]",
+				"[concat(variables('factoryId'), '/datasets/AreaRoleDataMart')]",
+				"[concat(variables('factoryId'), '/datasets/Attributions_Sink')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/AreaRoleDataMart')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "datalakestoragenk",
+					"type": "LinkedServiceReference"
+				},
+				"annotations": [],
+				"type": "DelimitedText",
+				"typeProperties": {
+					"location": {
+						"type": "AzureBlobFSLocation",
+						"fileName": "AreaDataMart.csv",
+						"folderPath": "data",
+						"fileSystem": "testcontainer"
+					},
+					"columnDelimiter": ",",
+					"escapeChar": "\\",
+					"firstRowAsHeader": true,
+					"quoteChar": "\""
+				},
+				"schema": [
+					{
+						"name": "AreaRoleId",
+						"type": "String"
+					},
+					{
+						"name": "Code",
+						"type": "String"
+					},
+					{
+						"name": "Abbreviation",
+						"type": "String"
+					},
+					{
+						"name": "Name",
+						"type": "String"
+					}
+				]
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/datalakestoragenk')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/AzureSqlDatabase1')]",
+			"type": "Microsoft.DataFactory/factories/linkedServices",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"annotations": [],
+				"type": "AzureSqlDatabase",
+				"typeProperties": {
+					"connectionString": "[parameters('AzureSqlDatabase1_connectionString')]"
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/Attributions_Sink')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "datalakestoragenk",
+					"type": "LinkedServiceReference"
+				},
+				"annotations": [],
+				"type": "DelimitedText",
+				"typeProperties": {
+					"location": {
+						"type": "AzureBlobFSLocation",
+						"folderPath": "output",
+						"fileSystem": "testcontainer"
+					},
+					"columnDelimiter": ",",
+					"escapeChar": "\\",
+					"firstRowAsHeader": true,
+					"quoteChar": "\""
+				},
+				"schema": []
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/datalakestoragenk')]"
 			]
 		}
 	]
