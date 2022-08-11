@@ -1,5 +1,5 @@
 {
-	"name": "Attributions_Area_DataTransformation1",
+	"name": "FlowletAttributions_Area_DataTransformation",
 	"properties": {
 		"type": "Flowlet",
 		"typeProperties": {
