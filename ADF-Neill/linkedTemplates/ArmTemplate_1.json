@@ -760,6 +760,85 @@
 			"dependsOn": []
 		},
 		{
+			"name": "[concat(parameters('factoryName'), '/dataflow3')]",
+			"type": "Microsoft.DataFactory/factories/dataflows",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"type": "MappingDataFlow",
+				"typeProperties": {
+					"sources": [
+						{
+							"dataset": {
+								"referenceName": "MoviesDB",
+								"type": "DatasetReference"
+							},
+							"name": "Movies"
+						}
+					],
+					"sinks": [
+						{
+							"dataset": {
+								"referenceName": "MoviesSink",
+								"type": "DatasetReference"
+							},
+							"name": "sink1"
+						}
+					],
+					"transformations": [
+						{
+							"name": "ComedyFilter"
+						},
+						{
+							"name": "AverageRatingComedy"
+						},
+						{
+							"name": "ActionFilter"
+						},
+						{
+							"name": "AverageRatingAction"
+						},
+						{
+							"name": "lookup1"
+						}
+					],
+					"scriptLines": [
+						"source(output(",
+						"          movie as string,",
+						"          title as string,",
+						"          genres as string,",
+						"          year as string,",
+						"          Rating as string,",
+						"          RottenTomato as string",
+						"     ),",
+						"     allowSchemaDrift: true,",
+						"     validateSchema: false,",
+						"     ignoreNoFilesFound: false) ~> Movies",
+						"Movies filter(toInteger(year) >= 1910 && toInteger(year) <= 2020 && rlike(genres, 'Comedy')) ~> ComedyFilter",
+						"ComedyFilter aggregate(groupBy(year),",
+						"     AggregateComedyRating = avg(toInteger(Rating)),",
+						"          MovieCountComedy = count(1)) ~> AverageRatingComedy",
+						"Movies filter(toInteger(year) >= 1910 && toInteger(year) <= 2020 && rlike(genres, 'Action')) ~> ActionFilter",
+						"ActionFilter aggregate(groupBy(year),",
+						"     AggregateActionRating = avg(toInteger(Rating)),",
+						"          MovieCountAction = count(1),",
+						"          each(match(type=='double'||type=='integer'||type=='short'||type=='decimal'), $$+'_max' = round(max($$),2))) ~> AverageRatingAction",
+						"AverageRatingAction, AverageRatingComedy lookup(AverageRatingAction@year == AverageRatingComedy@year,",
+						"     multiple: false,",
+						"     pickup: 'any',",
+						"     broadcast: 'auto')~> lookup1",
+						"lookup1 sink(allowSchemaDrift: true,",
+						"     validateSchema: false,",
+						"     umask: 0022,",
+						"     preCommands: [],",
+						"     postCommands: [],",
+						"     skipDuplicateMapInputs: true,",
+						"     skipDuplicateMapOutputs: true) ~> sink1"
+					]
+				}
+			},
+			"dependsOn": []
+		},
+		{
 			"name": "[concat(parameters('factoryName'), '/Transform_Movies')]",
 			"type": "Microsoft.DataFactory/factories/pipelines",
 			"apiVersion": "2018-06-01",
