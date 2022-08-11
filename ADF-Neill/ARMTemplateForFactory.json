@@ -456,6 +456,104 @@
 				"[concat(variables('factoryId'), '/datasets/MoviesDB')]",
 				"[concat(variables('factoryId'), '/datasets/MoviesSink')]"
 			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/df_dedupe')]",
+			"type": "Microsoft.DataFactory/factories/dataflows",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"type": "MappingDataFlow",
+				"typeProperties": {
+					"sources": [
+						{
+							"dataset": {
+								"referenceName": "MoviesDB",
+								"type": "DatasetReference"
+							},
+							"name": "Movies"
+						}
+					],
+					"sinks": [
+						{
+							"dataset": {
+								"referenceName": "MoviesSink",
+								"type": "DatasetReference"
+							},
+							"name": "sink1"
+						}
+					],
+					"transformations": [
+						{
+							"name": "DistinctRows"
+						},
+						{
+							"name": "OrignalData"
+						},
+						{
+							"name": "DistinctAllCols"
+						},
+						{
+							"name": "FuzzyMatch"
+						},
+						{
+							"name": "RowCountFuzzy"
+						},
+						{
+							"name": "RowCountAll"
+						},
+						{
+							"name": "RowCountOrig"
+						},
+						{
+							"name": "RowCountDistinct"
+						}
+					],
+					"scriptLines": [
+						"source(output(",
+						"          movie as string,",
+						"          title as string,",
+						"          genres as string,",
+						"          year as string,",
+						"          Rating as string,",
+						"          RottenTomato as string",
+						"     ),",
+						"     allowSchemaDrift: true,",
+						"     validateSchema: false,",
+						"     ignoreNoFilesFound: false) ~> Movies",
+						"Movies aggregate(groupBy(movie),",
+						"     each(match(name!='movie'), $$ = first($$))) ~> DistinctRows",
+						"Movies select(mapColumn(",
+						"          movie,",
+						"          title,",
+						"          genres,",
+						"          year,",
+						"          Rating,",
+						"          RottenTomato",
+						"     ),",
+						"     skipDuplicateMapInputs: false,",
+						"     skipDuplicateMapOutputs: false) ~> OrignalData",
+						"Movies aggregate(groupBy(mycols = sha2(256, columns())),",
+						"     each(match(true()), $$ = first($$))) ~> DistinctAllCols",
+						"Movies aggregate(groupBy(colsfuzzy = sha2(256,movie,year,soundex(title))),",
+						"     each(match(true()), $$ = first($$))) ~> FuzzyMatch",
+						"FuzzyMatch aggregate(rowcount_fuzzy = count(1)) ~> RowCountFuzzy",
+						"DistinctAllCols aggregate(rowcount_all = count(1)) ~> RowCountAll",
+						"OrignalData aggregate(rowcount_orig = count(1)) ~> RowCountOrig",
+						"DistinctRows aggregate(rowcount_agg = count(1)) ~> RowCountDistinct",
+						"DistinctRows sink(allowSchemaDrift: true,",
+						"     validateSchema: false,",
+						"     umask: 0022,",
+						"     preCommands: [],",
+						"     postCommands: [],",
+						"     skipDuplicateMapInputs: true,",
+						"     skipDuplicateMapOutputs: true) ~> sink1"
+					]
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/datasets/MoviesDB')]",
+				"[concat(variables('factoryId'), '/datasets/MoviesSink')]"
+			]
 		}
 	]
 }
