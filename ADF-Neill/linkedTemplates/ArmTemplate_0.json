@@ -284,6 +284,9 @@
 						},
 						{
 							"name": "Join1"
+						},
+						{
+							"name": "DerivedColumn1"
 						}
 					],
 					"scriptLines": [
@@ -330,6 +333,7 @@
 						"     matchType:'exact',",
 						"     ignoreSpaces: false,",
 						"     broadcast: 'auto')~> Join1",
+						"UniqDist derive(DWhash = sha1(numofunique,numofdistinct)) ~> DerivedColumn1",
 						"Join1 sink(allowSchemaDrift: true,",
 						"     validateSchema: false,",
 						"     umask: 0022,",
