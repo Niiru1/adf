@@ -16,7 +16,14 @@
 						"referenceName": "AreaRoleDataMart",
 						"type": "DatasetReference"
 					},
-					"name": "source2"
+					"name": "AreaRoleDataMart"
+				},
+				{
+					"dataset": {
+						"referenceName": "AreaRoleDataMart",
+						"type": "DatasetReference"
+					},
+					"name": "AreaCurated"
 				}
 			],
 			"sinks": [
@@ -168,8 +175,17 @@
 				"     ),",
 				"     allowSchemaDrift: true,",
 				"     validateSchema: false,",
-				"     ignoreNoFilesFound: false) ~> source2",
-				"source1, source2, source2 compose(mapColumn(",
+				"     ignoreNoFilesFound: false) ~> AreaRoleDataMart",
+				"source(output(",
+				"          AreaRoleId as string,",
+				"          Code as string,",
+				"          Abbreviation as string,",
+				"          Name as string",
+				"     ),",
+				"     allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     ignoreNoFilesFound: false) ~> AreaCurated",
+				"source1, AreaRoleDataMart, AreaRoleDataMart compose(mapColumn(",
 				"          {Incident Category Group},",
 				"          {Incident Category Group Description},",
 				"          {Responsible Organisation Full Name},",
@@ -288,15 +304,15 @@
 				"          {Financial Period Number},",
 				"          {Planned Origin WTT Datetime - React}",
 				"     ),mapColumn(",
-				"          AreaRoleId,",
-				"          Code,",
-				"          Abbreviation,",
-				"          Name",
+				"          AreaRoleId = AreaRoleDataMart@AreaRoleId,",
+				"          Code = AreaRoleDataMart@Code,",
+				"          Abbreviation = AreaRoleDataMart@Abbreviation,",
+				"          Name = AreaRoleDataMart@Name",
 				"     ),mapColumn(",
-				"          AreaRoleId,",
-				"          Code,",
-				"          Abbreviation,",
-				"          Name",
+				"          AreaRoleId = AreaRoleDataMart@AreaRoleId,",
+				"          Code = AreaRoleDataMart@Code,",
+				"          Abbreviation = AreaRoleDataMart@Abbreviation,",
+				"          Name = AreaRoleDataMart@Name",
 				"     ),",
 				"     composition: 'FlowletAttributions_Area_DataTransformation') ~> flowlet1@(CuratedFullArea, CuratedSnapshot)",
 				"flowlet1@CuratedSnapshot sink(allowSchemaDrift: true,",
