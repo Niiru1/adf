@@ -1,5 +1,5 @@
 {
-	"name": "1_Employees",
+	"name": "1_ExecEmployeesFlowlet",
 	"properties": {
 		"type": "MappingDataFlow",
 		"typeProperties": {
@@ -19,18 +19,15 @@
 						"type": "DatasetReference"
 					},
 					"name": "sink1"
-				},
-				{
-					"dataset": {
-						"referenceName": "outputFolder",
-						"type": "DatasetReference"
-					},
-					"name": "sink2"
 				}
 			],
 			"transformations": [
 				{
-					"name": "aggregate1"
+					"name": "flowlet1",
+					"flowlet": {
+						"referenceName": "1_Flowlet",
+						"type": "DataFlowReference"
+					}
 				}
 			],
 			"scriptLines": [
@@ -42,22 +39,15 @@
 				"     allowSchemaDrift: true,",
 				"     validateSchema: false,",
 				"     ignoreNoFilesFound: false) ~> emp",
-				"emp aggregate(groupBy(id,",
+				"emp compose(mapColumn(",
+				"          id,",
 				"          name,",
-				"          gender),",
-				"     count = count()) ~> aggregate1",
-				"aggregate1 sink(allowSchemaDrift: true,",
+				"          gender",
+				"     ),",
+				"     composition: '1_Flowlet') ~> flowlet1@(output1)",
+				"flowlet1@output1 sink(allowSchemaDrift: true,",
 				"     validateSchema: false,",
-				"     partitionFileNames:['EmployeesOutput.csv'],",
-				"     umask: 0022,",
-				"     preCommands: [],",
-				"     postCommands: [],",
-				"     skipDuplicateMapInputs: true,",
-				"     skipDuplicateMapOutputs: true,",
-				"     partitionBy('hash', 1)) ~> sink1",
-				"aggregate1 sink(allowSchemaDrift: true,",
-				"     validateSchema: false,",
-				"     partitionFileNames:['EmployeesOutput.csv'],",
+				"     partitionFileNames:['ExecFlowletOutput.csv'],",
 				"     umask: 0022,",
 				"     preCommands: [],",
 				"     postCommands: [],",
@@ -68,7 +58,7 @@
 				"          name,",
 				"          gender",
 				"     ),",
-				"     partitionBy('hash', 1)) ~> sink2"
+				"     partitionBy('hash', 1)) ~> sink1"
 			]
 		}
 	}
