@@ -1,0 +1,493 @@
+{
+	"name": "Attributions_Raw_Csv",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "datalakestoragenk",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "DelimitedText",
+		"typeProperties": {
+			"location": {
+				"type": "AzureBlobFSLocation",
+				"fileName": "Attributions-2022-07-09-04-16-36-modified.csv",
+				"folderPath": "data",
+				"fileSystem": "testcontainer"
+			},
+			"columnDelimiter": ",",
+			"escapeChar": "\\",
+			"firstRowAsHeader": true,
+			"quoteChar": "\""
+		},
+		"schema": [
+			{
+				"name": "Incident Category Group",
+				"type": "String"
+			},
+			{
+				"name": "Incident Category Group Description",
+				"type": "String"
+			},
+			{
+				"name": "Responsible Organisation Full Name",
+				"type": "String"
+			},
+			{
+				"name": "Responsible Type",
+				"type": "String"
+			},
+			{
+				"name": "Route",
+				"type": "String"
+			},
+			{
+				"name": "Route Name",
+				"type": "String"
+			},
+			{
+				"name": "Area",
+				"type": "String"
+			},
+			{
+				"name": "Area Abbrev",
+				"type": "String"
+			},
+			{
+				"name": "Area Name",
+				"type": "String"
+			},
+			{
+				"name": "Area Role Abbrev",
+				"type": "String"
+			},
+			{
+				"name": "Area Role Name",
+				"type": "String"
+			},
+			{
+				"name": "Incident Number",
+				"type": "String"
+			},
+			{
+				"name": "Incident Create Date",
+				"type": "String"
+			},
+			{
+				"name": "Incident Description",
+				"type": "String"
+			},
+			{
+				"name": "Incident Type",
+				"type": "String"
+			},
+			{
+				"name": "Incident Start Datetime",
+				"type": "String"
+			},
+			{
+				"name": "Incident End Datetime",
+				"type": "String"
+			},
+			{
+				"name": "Incident Close Datetime",
+				"type": "String"
+			},
+			{
+				"name": "Incident Duration",
+				"type": "String"
+			},
+			{
+				"name": "Incident Status",
+				"type": "String"
+			},
+			{
+				"name": "Incident New Flag",
+				"type": "String"
+			},
+			{
+				"name": "Section Start Code",
+				"type": "String"
+			},
+			{
+				"name": "Section End Code",
+				"type": "String"
+			},
+			{
+				"name": "Attribution Area Code",
+				"type": "String"
+			},
+			{
+				"name": "Attribution Area Description",
+				"type": "String"
+			},
+			{
+				"name": "Incident Reason Type Name",
+				"type": "String"
+			},
+			{
+				"name": "Incident Category",
+				"type": "String"
+			},
+			{
+				"name": "Incident Category Description",
+				"type": "String"
+			},
+			{
+				"name": "Incident Reason",
+				"type": "String"
+			},
+			{
+				"name": "Incident Reason Name",
+				"type": "String"
+			},
+			{
+				"name": "Incident Reason Description",
+				"type": "String"
+			},
+			{
+				"name": "Performance Event Group",
+				"type": "String"
+			},
+			{
+				"name": "Performance Event Code",
+				"type": "String"
+			},
+			{
+				"name": "Performance Event Name",
+				"type": "String"
+			},
+			{
+				"name": "Start Stanox",
+				"type": "String"
+			},
+			{
+				"name": "End Stanox",
+				"type": "String"
+			},
+			{
+				"name": "Operator - Resp",
+				"type": "String"
+			},
+			{
+				"name": "Operator Type - Resp",
+				"type": "String"
+			},
+			{
+				"name": "Operator Franchised - Resp",
+				"type": "String"
+			},
+			{
+				"name": "Operator Holding Company - Resp",
+				"type": "String"
+			},
+			{
+				"name": "Operator Name - Resp",
+				"type": "String"
+			},
+			{
+				"name": "Operator Full Name - Resp",
+				"type": "String"
+			},
+			{
+				"name": "Service Group Type - Resp",
+				"type": "String"
+			},
+			{
+				"name": "Service Group Code - Resp",
+				"type": "String"
+			},
+			{
+				"name": "Service Group Description - Resp",
+				"type": "String"
+			},
+			{
+				"name": "TSC - Resp",
+				"type": "String"
+			},
+			{
+				"name": "TSC Description - Resp",
+				"type": "String"
+			},
+			{
+				"name": "TSC PfPI Flag - Resp",
+				"type": "String"
+			},
+			{
+				"name": "Headcode - Resp",
+				"type": "String"
+			},
+			{
+				"name": "Train ID - Resp",
+				"type": "String"
+			},
+			{
+				"name": "Punctuality Threshold - Resp",
+				"type": "String"
+			},
+			{
+				"name": "Train Service Perf Value - Resp",
+				"type": "String"
+			},
+			{
+				"name": "Train Class Code - Resp",
+				"type": "String"
+			},
+			{
+				"name": "Train Class Description - Resp",
+				"type": "String"
+			},
+			{
+				"name": "Train Class PfPI Flag - Resp",
+				"type": "String"
+			},
+			{
+				"name": "Planned Dest Location Code - Resp",
+				"type": "String"
+			},
+			{
+				"name": "Planned Origin Location Code - Resp",
+				"type": "String"
+			},
+			{
+				"name": "Planned Origin WTT Datetime - Resp",
+				"type": "String"
+			},
+			{
+				"name": "Planned Dest GBTT Datetime - Resp",
+				"type": "String"
+			},
+			{
+				"name": "Operator Holding Company - Affected",
+				"type": "String"
+			},
+			{
+				"name": "Operator Type - Affected",
+				"type": "String"
+			},
+			{
+				"name": "Operator - Affected",
+				"type": "String"
+			},
+			{
+				"name": "Operator Name - Affected",
+				"type": "String"
+			},
+			{
+				"name": "Operator Full Name - Affected",
+				"type": "String"
+			},
+			{
+				"name": "Operator Franchised - Affected",
+				"type": "String"
+			},
+			{
+				"name": "Service Group Code - Affected",
+				"type": "String"
+			},
+			{
+				"name": "Service Group Description - Affected",
+				"type": "String"
+			},
+			{
+				"name": "Service Group Type - Affected",
+				"type": "String"
+			},
+			{
+				"name": "Punctuality Threshold - Affected",
+				"type": "String"
+			},
+			{
+				"name": "TSC - Affected",
+				"type": "String"
+			},
+			{
+				"name": "TSC Description - Affected",
+				"type": "String"
+			},
+			{
+				"name": "TSC PfPI Flag - Affected",
+				"type": "String"
+			},
+			{
+				"name": "Train ID - Affected",
+				"type": "String"
+			},
+			{
+				"name": "Train Class Code - Affected",
+				"type": "String"
+			},
+			{
+				"name": "Train Class Description - Affected",
+				"type": "String"
+			},
+			{
+				"name": "Train Class PfPI Flag - Affected",
+				"type": "String"
+			},
+			{
+				"name": "Headcode - Affected",
+				"type": "String"
+			},
+			{
+				"name": "Planned Dest Actual Datetime - Affected",
+				"type": "String"
+			},
+			{
+				"name": "Planned Dest GBTT Datetime - Affected",
+				"type": "String"
+			},
+			{
+				"name": "Planned Dest Location Code - Affected",
+				"type": "String"
+			},
+			{
+				"name": "Planned Dest WTT Datetime - Affected",
+				"type": "String"
+			},
+			{
+				"name": "Planned Origin Location Code - Affected",
+				"type": "String"
+			},
+			{
+				"name": "Planned Origin Actual Datetime - Affected",
+				"type": "String"
+			},
+			{
+				"name": "Planned Origin WTT Datetime - Affected",
+				"type": "String"
+			},
+			{
+				"name": "Operator Type - React",
+				"type": "String"
+			},
+			{
+				"name": "Operator Franchised - React",
+				"type": "String"
+			},
+			{
+				"name": "Operator - React",
+				"type": "String"
+			},
+			{
+				"name": "Operator Holding Company - React",
+				"type": "String"
+			},
+			{
+				"name": "Operator Name - React",
+				"type": "String"
+			},
+			{
+				"name": "Operator Full Name - React",
+				"type": "String"
+			},
+			{
+				"name": "Train Class Code - React",
+				"type": "String"
+			},
+			{
+				"name": "Train Class Description - React",
+				"type": "String"
+			},
+			{
+				"name": "Train Class PfPI Flag - React",
+				"type": "String"
+			},
+			{
+				"name": "TSC - React",
+				"type": "String"
+			},
+			{
+				"name": "TSC Description - React",
+				"type": "String"
+			},
+			{
+				"name": "TSC PfPI Flag - React",
+				"type": "String"
+			},
+			{
+				"name": "Service Group Type - React",
+				"type": "String"
+			},
+			{
+				"name": "Service Group Code - React",
+				"type": "String"
+			},
+			{
+				"name": "Service Group Description - React",
+				"type": "String"
+			},
+			{
+				"name": "Headcode - React",
+				"type": "String"
+			},
+			{
+				"name": "Train ID - React",
+				"type": "String"
+			},
+			{
+				"name": "Punctuality Threshold - React",
+				"type": "String"
+			},
+			{
+				"name": "Reactionary Category Super Group Name",
+				"type": "String"
+			},
+			{
+				"name": "Reactionary Category Group Description",
+				"type": "String"
+			},
+			{
+				"name": "Reactionary Category Code",
+				"type": "String"
+			},
+			{
+				"name": "Reactionary Category Description",
+				"type": "String"
+			},
+			{
+				"name": "Reactionary Reason Code",
+				"type": "String"
+			},
+			{
+				"name": "Reactionary Reason Name",
+				"type": "String"
+			},
+			{
+				"name": "Reactionary Reason Description",
+				"type": "String"
+			},
+			{
+				"name": "PfPI Minutes",
+				"type": "String"
+			},
+			{
+				"name": "PfPI Costs",
+				"type": "String"
+			},
+			{
+				"name": "Attributed Minutes",
+				"type": "String"
+			},
+			{
+				"name": "Attributed Cost",
+				"type": "String"
+			},
+			{
+				"name": "Event Datetime",
+				"type": "String"
+			},
+			{
+				"name": "Financial Year",
+				"type": "String"
+			},
+			{
+				"name": "Financial Period Number",
+				"type": "String"
+			},
+			{
+				"name": "Planned Origin WTT Datetime - React",
+				"type": "String"
+			}
+		]
+	}
+}
