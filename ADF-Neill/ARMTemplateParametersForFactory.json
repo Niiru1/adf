@@ -5,13 +5,13 @@
 		"factoryName": {
 			"value": "ADF-Neill"
 		},
-		"datalakestoragenk_accountKey": {
+		"AzureSqlDatabase1_connectionString": {
 			"value": ""
 		},
 		"EmployeeInput_connectionString": {
 			"value": ""
 		},
-		"AzureSqlDatabase1_connectionString": {
+		"datalakestoragenk_accountKey": {
 			"value": ""
 		},
 		"datalakestoragenk_properties_typeProperties_url": {

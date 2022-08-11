@@ -7,17 +7,17 @@
 			"metadata": "Data Factory name",
 			"defaultValue": "ADF-Neill"
 		},
-		"datalakestoragenk_accountKey": {
+		"AzureSqlDatabase1_connectionString": {
 			"type": "secureString",
-			"metadata": "Secure string for 'accountKey' of 'datalakestoragenk'"
+			"metadata": "Secure string for 'connectionString' of 'AzureSqlDatabase1'"
 		},
 		"EmployeeInput_connectionString": {
 			"type": "secureString",
 			"metadata": "Secure string for 'connectionString' of 'EmployeeInput'"
 		},
-		"AzureSqlDatabase1_connectionString": {
+		"datalakestoragenk_accountKey": {
 			"type": "secureString",
-			"metadata": "Secure string for 'connectionString' of 'AzureSqlDatabase1'"
+			"metadata": "Secure string for 'accountKey' of 'datalakestoragenk'"
 		},
 		"datalakestoragenk_properties_typeProperties_url": {
 			"type": "string",
@@ -50,14 +50,14 @@
 					"factoryName": {
 						"value": "[parameters('factoryName')]"
 					},
-					"datalakestoragenk_accountKey": {
-						"value": "[parameters('datalakestoragenk_accountKey')]"
+					"AzureSqlDatabase1_connectionString": {
+						"value": "[parameters('AzureSqlDatabase1_connectionString')]"
 					},
 					"EmployeeInput_connectionString": {
 						"value": "[parameters('EmployeeInput_connectionString')]"
 					},
-					"AzureSqlDatabase1_connectionString": {
-						"value": "[parameters('AzureSqlDatabase1_connectionString')]"
+					"datalakestoragenk_accountKey": {
+						"value": "[parameters('datalakestoragenk_accountKey')]"
 					},
 					"datalakestoragenk_properties_typeProperties_url": {
 						"value": "[parameters('datalakestoragenk_properties_typeProperties_url')]"
@@ -65,6 +65,26 @@
 				}
 			},
 			"dependsOn": []
+		},
+		{
+			"name": "ADF-Neill_ArmTemplate_1",
+			"type": "Microsoft.Resources/deployments",
+			"apiVersion": "2018-02-01",
+			"properties": {
+				"mode": "incremental",
+				"templateLink": {
+					"uri": "[concat(parameters('containerUri'), '/ArmTemplate_1.json', parameters('containerSasToken'))]",
+					"contentVersion": "1.0.0.0"
+				},
+				"parameters": {
+					"factoryName": {
+						"value": "[parameters('factoryName')]"
+					}
+				}
+			},
+			"dependsOn": [
+				"[resourceId('Microsoft.Resources/deployments', 'ADF-Neill_ArmTemplate_0')]"
+			]
 		}
 	]
 }
