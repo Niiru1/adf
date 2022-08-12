@@ -1,0 +1,124 @@
+{
+	"name": "dataflow4",
+	"properties": {
+		"type": "MappingDataFlow",
+		"typeProperties": {
+			"sources": [
+				{
+					"dataset": {
+						"referenceName": "MoviesDB",
+						"type": "DatasetReference"
+					},
+					"name": "Movies"
+				}
+			],
+			"sinks": [],
+			"transformations": [
+				{
+					"name": "FilterActon"
+				},
+				{
+					"name": "StatsAction"
+				},
+				{
+					"name": "FilterComedy"
+				},
+				{
+					"name": "StatsComedy"
+				},
+				{
+					"name": "FilterCrime"
+				},
+				{
+					"name": "StatsCrime"
+				},
+				{
+					"name": "FilterDrama"
+				},
+				{
+					"name": "StatsDrama"
+				},
+				{
+					"name": "FilterRomance"
+				},
+				{
+					"name": "StatsRomance"
+				},
+				{
+					"name": "FilterAdventure"
+				},
+				{
+					"name": "StatsAdventure"
+				},
+				{
+					"name": "FilterMusical"
+				},
+				{
+					"name": "StatsMusical"
+				}
+			],
+			"scriptLines": [
+				"source(output(",
+				"          movie as string,",
+				"          title as string,",
+				"          genres as string,",
+				"          year as string,",
+				"          Rating as string,",
+				"          RottenTomato as string",
+				"     ),",
+				"     allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     ignoreNoFilesFound: false) ~> Movies",
+				"Movies filter(toInteger(year) >= 1910 && toInteger(year) <= 2020 && rlike(genres, 'Action') && rlike(title, '$$')) ~> FilterActon",
+				"FilterActon aggregate(groupBy(year),",
+				"     maxmovieratingAction = max(toInteger(Rating)),",
+				"          maxRTratingAction = max(toInteger(RottenTomato)),",
+				"          moviecountAction = count(1),",
+				"          avgmovieratingAction = avg(toInteger(Rating)),",
+				"          title = max(title)) ~> StatsAction",
+				"Movies filter(toInteger(year) >= 1910 && toInteger(year) <= 2020 && rlike(genres, 'Comedy') && rlike(title, '$$')) ~> FilterComedy",
+				"FilterComedy aggregate(groupBy(year),",
+				"     maxmovieratingComedy = max(toInteger(Rating)),",
+				"          maxRT = max(toInteger(RottenTomato)),",
+				"          moviecountComedy = count(1),",
+				"          avgmovieratingComedy = avg(toInteger(Rating)),",
+				"          title = max(title)) ~> StatsComedy",
+				"Movies filter(toInteger(year) >= 1910 && toInteger(year) <= 2020 && rlike(genres, 'Crime') && rlike(title, '$$')) ~> FilterCrime",
+				"FilterCrime aggregate(groupBy(year),",
+				"     maxmovieratingCrime = max(toInteger(Rating)),",
+				"          maxRTratingCrime = max(toInteger(RottenTomato)),",
+				"          moviecountCrime = count(1),",
+				"          avgmovieratingCrime = avg(toInteger(Rating)),",
+				"          title = max(title)) ~> StatsCrime",
+				"Movies filter(toInteger(year) >= 1910 && toInteger(year) <= 2020 && rlike(genres, 'Drama') && rlike(title, '$$')) ~> FilterDrama",
+				"FilterDrama aggregate(groupBy(year),",
+				"     maxmovieratingDrama = max(toInteger(Rating)),",
+				"          maxRTratingDrama = max(toInteger(RottenTomato)),",
+				"          moviecountDrama = count(1),",
+				"          avgmovieratingDrama = avg(toInteger(Rating)),",
+				"          title = max(title)) ~> StatsDrama",
+				"Movies filter(toInteger(year) >= 1910 && toInteger(year) <= 2020 && rlike(genres, 'Romance') && rlike(title, '$$')) ~> FilterRomance",
+				"FilterRomance aggregate(groupBy(year),",
+				"     maxmovieratingRomance = max(toInteger(Rating)),",
+				"          maxRTratingRomance = max(toInteger(RottenTomato)),",
+				"          moviecountRomance = count(1),",
+				"          avgmovieratingRomance = avg(toInteger(Rating)),",
+				"          title = max(title)) ~> StatsRomance",
+				"Movies filter(toInteger(year) >= 1910 && toInteger(year) <= 2020 && rlike(genres, 'Adventure') && rlike(title, '$$')) ~> FilterAdventure",
+				"FilterAdventure aggregate(groupBy(year),",
+				"     maxmovieratingAdventure = max(toInteger(Rating)),",
+				"          maxRTratingAdventure = max(toInteger(RottenTomato)),",
+				"          moviecountAdventure = count(1),",
+				"          avgmovieratingAdventure = avg(toInteger(Rating)),",
+				"          title = max(title)) ~> StatsAdventure",
+				"Movies filter(toInteger(year) >= 1910 && toInteger(year) <= 2020 && rlike(genres, 'Musical') && rlike(title, '$$')) ~> FilterMusical",
+				"FilterMusical aggregate(groupBy(year),",
+				"     maxmovieratingMusical = max(toInteger(Rating)),",
+				"          maxRTratingMusical = max(toInteger(RottenTomato)),",
+				"          moviecountMusical = count(1),",
+				"          avgmovieratingMusical = avg(toInteger(Rating)),",
+				"          title = max(title)) ~> StatsMusical"
+			]
+		}
+	}
+}
