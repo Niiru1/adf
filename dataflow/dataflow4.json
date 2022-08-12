@@ -55,6 +55,15 @@
 				},
 				{
 					"name": "StatsMusical"
+				},
+				{
+					"name": "surrogateKey1"
+				},
+				{
+					"name": "CountUnique"
+				},
+				{
+					"name": "aggregate1"
 				}
 			],
 			"scriptLines": [
@@ -117,7 +126,18 @@
 				"          maxRTratingMusical = max(toInteger(RottenTomato)),",
 				"          moviecountMusical = count(1),",
 				"          avgmovieratingMusical = avg(toInteger(Rating)),",
-				"          title = max(title)) ~> StatsMusical"
+				"          title = max(title)) ~> StatsMusical",
+				"StatsMusical keyGenerate(output(sk as long),",
+				"     startAt: 1L,",
+				"     stepValue: 1L) ~> surrogateKey1",
+				"Movies aggregate(groupBy(title),",
+				"     countunique = count(),",
+				"          maxyear = max(year),",
+				"          minyear = min(year)) ~> CountUnique",
+				"CountUnique aggregate(groupBy(title,",
+				"          {} = ERROR_FUNCTION('')),",
+				"     numofunique = countIf(countunique==1),",
+				"          numofdistinct = countDistinct(title)) ~> aggregate1"
 			]
 		}
 	}
