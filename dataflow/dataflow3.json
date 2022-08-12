@@ -32,13 +32,49 @@
 					"name": "ActionFilter"
 				},
 				{
-					"name": "AverageRatingAction"
+					"name": "MovieCountandAverageRatingAction"
 				},
 				{
 					"name": "lookup1"
+				},
+				{
+					"name": "YearMaxRatingAction"
+				},
+				{
+					"name": "YearTitleMaxRating"
+				},
+				{
+					"name": "lookup2"
+				},
+				{
+					"name": "select1"
+				},
+				{
+					"name": "aggregate1"
+				},
+				{
+					"name": "union1"
+				},
+				{
+					"name": "select2"
+				},
+				{
+					"name": "aggregate2"
+				},
+				{
+					"name": "derivedColumn1"
+				},
+				{
+					"name": "window1"
+				},
+				{
+					"name": "surrogateKey1"
 				}
 			],
 			"scriptLines": [
+				"parameters{",
+				"     parameter1 as string (title)",
+				"}",
 				"source(output(",
 				"          movie as string,",
 				"          title as string,",
@@ -50,19 +86,58 @@
 				"     allowSchemaDrift: true,",
 				"     validateSchema: false,",
 				"     ignoreNoFilesFound: false) ~> Movies",
-				"Movies filter(toInteger(year) >= 1910 && toInteger(year) <= 2020 && rlike(genres, 'Comedy')) ~> ComedyFilter",
+				"Movies filter(toInteger(year) >= 1910 && toInteger(year) <= 2020 && rlike(genres, 'Comedy') && title== $parameter1) ~> ComedyFilter",
 				"ComedyFilter aggregate(groupBy(year),",
 				"     AggregateComedyRating = avg(toInteger(Rating)),",
 				"          MovieCountComedy = count(1)) ~> AverageRatingComedy",
-				"Movies filter(toInteger(year) >= 1910 && toInteger(year) <= 2020 && rlike(genres, 'Action')) ~> ActionFilter",
+				"Movies filter(toInteger(year) >= 1910 && toInteger(year) <= 2020 && rlike(genres, 'Action') && rlike(title, '$$')) ~> ActionFilter",
 				"ActionFilter aggregate(groupBy(year),",
 				"     AggregateActionRating = avg(toInteger(Rating)),",
 				"          MovieCountAction = count(1),",
-				"          each(match(type=='double'||type=='integer'||type=='short'||type=='decimal'), $$+'_max' = round(max($$),2))) ~> AverageRatingAction",
-				"AverageRatingAction, AverageRatingComedy lookup(AverageRatingAction@year == AverageRatingComedy@year,",
+				"          MaxRatingAction = max(toInteger(Rating)),",
+				"          each(match(type=='double'||type=='integer'||type=='short'||type=='decimal'||type=='soundex'), $$+'_max' = round(max($$),2))) ~> MovieCountandAverageRatingAction",
+				"MovieCountandAverageRatingAction, AverageRatingComedy lookup(MovieCountandAverageRatingAction@year == AverageRatingComedy@year,",
 				"     multiple: false,",
 				"     pickup: 'any',",
 				"     broadcast: 'auto')~> lookup1",
+				"MovieCountandAverageRatingAction aggregate(groupBy(year),",
+				"     MaxRatingAction = max(toInteger(MaxRatingAction))) ~> YearMaxRatingAction",
+				"ActionFilter aggregate(groupBy(year,",
+				"          title),",
+				"     maxmovieratingaction = max(toInteger(Rating))) ~> YearTitleMaxRating",
+				"YearTitleMaxRating, MovieCountandAverageRatingAction lookup(YearTitleMaxRating@year == MovieCountandAverageRatingAction@year,",
+				"     multiple: true,",
+				"     broadcast: 'auto')~> lookup2",
+				"lookup2 select(mapColumn(",
+				"          year = YearTitleMaxRating@year,",
+				"          title,",
+				"          AggregateActionRating,",
+				"          MovieCountAction",
+				"     ),",
+				"     skipDuplicateMapInputs: true,",
+				"     skipDuplicateMapOutputs: true) ~> select1",
+				"select1 aggregate(groupBy(year),",
+				"     max = max(toInteger(MovieCountAction))) ~> aggregate1",
+				"YearTitleMaxRating, MovieCountandAverageRatingAction union(byName: true)~> union1",
+				"ComedyFilter select(mapColumn(",
+				"          year,",
+				"          title,",
+				"          Rating",
+				"     ),",
+				"     skipDuplicateMapInputs: true,",
+				"     skipDuplicateMapOutputs: true) ~> select2",
+				"select2 aggregate(groupBy(year,",
+				"          title),",
+				"     maxratingcomedy = max(toInteger(Rating))) ~> aggregate2",
+				"YearTitleMaxRating derive(code = iif(isInteger(title),title,title)) ~> derivedColumn1",
+				"derivedColumn1 window(over(title,",
+				"          year),",
+				"     asc(year, true),",
+				"     endRowOffset: 0L,",
+				"     maxmovieratingaction = max(toInteger(maxmovieratingaction))) ~> window1",
+				"YearMaxRatingAction keyGenerate(output(sk as long),",
+				"     startAt: 1L,",
+				"     stepValue: 1L) ~> surrogateKey1",
 				"lookup1 sink(allowSchemaDrift: true,",
 				"     validateSchema: false,",
 				"     umask: 0022,",
