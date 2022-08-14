@@ -1,0 +1,49 @@
+{
+	"name": "flowlet42",
+	"properties": {
+		"type": "Flowlet",
+		"typeProperties": {
+			"sources": [],
+			"sinks": [],
+			"transformations": [
+				{
+					"name": "CountUnique"
+				},
+				{
+					"name": "aggregate1"
+				},
+				{
+					"name": "filter1"
+				},
+				{
+					"name": "Movies"
+				},
+				{
+					"name": "output1"
+				}
+			],
+			"scriptLines": [
+				"input(output(",
+				"          movie as string,",
+				"          title as string,",
+				"          genres as string,",
+				"          year as string,",
+				"          Rating as string,",
+				"          RottenTomato as string",
+				"     ),",
+				"     order: 0) ~> Movies",
+				"Movies aggregate(groupBy(title),",
+				"     countunique = count(),",
+				"          maxyear = max(year),",
+				"          minyear = min(year),",
+				"          genres = max(genres)) ~> CountUnique",
+				"filter1 aggregate(groupBy(title),",
+				"     numofunique = countIf(countunique==1),",
+				"          numofdistinct = countDistinct(title),",
+				"          each(match(true()), $$+'_Null' = countIf(!isNull($$)))) ~> aggregate1",
+				"CountUnique filter(toInteger(countunique) > 1) ~> filter1",
+				"filter1 output() ~> output1"
+			]
+		}
+	}
+}

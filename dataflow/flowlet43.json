@@ -1,0 +1,38 @@
+{
+	"name": "flowlet43",
+	"properties": {
+		"type": "Flowlet",
+		"typeProperties": {
+			"sources": [],
+			"sinks": [],
+			"transformations": [
+				{
+					"name": "CountUnique"
+				},
+				{
+					"name": "Movies"
+				},
+				{
+					"name": "output1"
+				}
+			],
+			"scriptLines": [
+				"input(output(",
+				"          movie as string,",
+				"          title as string,",
+				"          genres as string,",
+				"          year as string,",
+				"          Rating as string,",
+				"          RottenTomato as string",
+				"     ),",
+				"     order: 0) ~> Movies",
+				"Movies aggregate(groupBy(title),",
+				"     countunique = count(),",
+				"          maxyear = max(year),",
+				"          minyear = min(year),",
+				"          genres = max(genres)) ~> CountUnique",
+				"CountUnique output() ~> output1"
+			]
+		}
+	}
+}
