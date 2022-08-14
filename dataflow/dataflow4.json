@@ -96,6 +96,9 @@
 				},
 				{
 					"name": "filter1"
+				},
+				{
+					"name": "aggregate2"
 				}
 			],
 			"scriptLines": [
@@ -194,6 +197,7 @@
 				"     ignoreSpaces: false,",
 				"     broadcast: 'off')~> join1",
 				"CountUnique filter(toInteger(countunique) > 1) ~> filter1",
+				"surrogateKey7 aggregate() ~> aggregate2",
 				"join1 sink(allowSchemaDrift: true,",
 				"     validateSchema: false,",
 				"     umask: 0022,",
