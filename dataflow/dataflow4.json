@@ -134,10 +134,10 @@
 				"     countunique = count(),",
 				"          maxyear = max(year),",
 				"          minyear = min(year)) ~> CountUnique",
-				"CountUnique aggregate(groupBy(title,",
-				"          {} = ERROR_FUNCTION('')),",
+				"CountUnique aggregate(groupBy(title),",
 				"     numofunique = countIf(countunique==1),",
-				"          numofdistinct = countDistinct(title)) ~> aggregate1"
+				"          numofdistinct = countDistinct(title),",
+				"          each(match(true()), $$+'_Null' = countIf(!isNull($$)))) ~> aggregate1"
 			]
 		}
 	}
