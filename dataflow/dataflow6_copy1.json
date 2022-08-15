@@ -1,5 +1,5 @@
 {
-	"name": "dataflow6",
+	"name": "dataflow6_copy1",
 	"properties": {
 		"type": "MappingDataFlow",
 		"typeProperties": {
@@ -10,23 +10,9 @@
 						"type": "DatasetReference"
 					},
 					"name": "AttributionsRaw"
-				},
-				{
-					"dataset": {
-						"referenceName": "Locations",
-						"type": "DatasetReference"
-					},
-					"name": "LocationsErrors"
 				}
 			],
 			"sinks": [
-				{
-					"dataset": {
-						"referenceName": "outputFolder",
-						"type": "DatasetReference"
-					},
-					"name": "sink1"
-				},
 				{
 					"dataset": {
 						"referenceName": "outputFolder",
@@ -41,12 +27,6 @@
 				},
 				{
 					"name": "select1"
-				},
-				{
-					"name": "join1"
-				},
-				{
-					"name": "aggregate1"
 				},
 				{
 					"name": "LocationsFilter"
@@ -184,12 +164,6 @@
 				"     allowSchemaDrift: true,",
 				"     validateSchema: false,",
 				"     ignoreNoFilesFound: false) ~> AttributionsRaw",
-				"source(output(",
-				"          {Planned Dest Location Code - Affected} as string",
-				"     ),",
-				"     allowSchemaDrift: true,",
-				"     validateSchema: false,",
-				"     ignoreNoFilesFound: false) ~> LocationsErrors",
 				"AttributionsRaw filter(!isNull({Event Datetime})) ~> FilterEmptyRows",
 				"FilterEmptyRows select(mapColumn(",
 				"          each(match(/* All input columns */ true()),",
@@ -200,32 +174,15 @@
 				"     ),",
 				"     skipDuplicateMapInputs: true,",
 				"     skipDuplicateMapOutputs: true) ~> select1",
-				"select1, LocationsErrors join(fuzzyCompare(select1@{Planned Dest Location Code - Affected}, LocationsErrors@{Planned Dest Location Code - Affected}, 80.00),",
-				"     joinType:'inner',",
-				"     matchType:'fuzzy',",
-				"     ignoreSpaces: false,",
-				"     broadcast: 'off')~> join1",
-				"join1 aggregate(groupBy({Planned Origin Location Code - Affected}),",
-				"     column1 = max({Attribution Area Description}),",
-				"          column2 = max({Incident Reason Name}),",
-				"          {Attributed Cost} = max({Attributed Cost}),",
-				"          {Event Datetime} = max({Event Datetime})) ~> aggregate1",
 				"select1 filter(rlike({Planned Dest Location Code - Affected}, '66433') || rlike({Planned Dest Location Code - Affected}, '40024')  || rlike({Planned Dest Location Code - Affected}, '63033')  || rlike({Planned Dest Location Code - Affected}, '59014') || rlike({Planned Dest Location Code - Affected}, '66233')  || rlike({Planned Dest Location Code - Affected}, '43050')  || rlike({Planned Dest Location Code - Affected}, '66395')  || rlike({Planned Dest Location Code - Affected}, '36182') || rlike({Planned Dest Location Code - Affected}, '36153') || rlike({Planned Dest Location Code - Affected}, '66397') || rlike({Planned Dest Location Code - Affected}, '65086') ) ~> LocationsFilter",
 				"derivedColumn2 aggregate({Planned Dest Location Code - Resp} = count(),",
-				"          {Time Lost (Hrs)} = sum({Length of Time Hrs}),",
+				"          {Total Time Lost (Hrs)} = sum({Length of Time Hrs}),",
 				"          {Time Lost Max} = max({Length of Time Hrs}),",
 				"          {Incident Number} = max({Incident Number}),",
 				"          {Attribution Area Description} = max({Attribution Area Description}),",
 				"          {Incident Reason} = max({Incident Reason Description})) ~> aggregate14",
 				"LocationsFilter derive({Length of Time} = divide(toInteger({Incident Duration}), 60)) ~> derivedColumn1",
 				"derivedColumn1 derive({Length of Time Hrs} = toDecimal({Length of Time})) ~> derivedColumn2",
-				"aggregate1 sink(allowSchemaDrift: true,",
-				"     validateSchema: false,",
-				"     umask: 0022,",
-				"     preCommands: [],",
-				"     postCommands: [],",
-				"     skipDuplicateMapInputs: true,",
-				"     skipDuplicateMapOutputs: true) ~> sink1",
 				"LocationsFilter sink(allowSchemaDrift: true,",
 				"     validateSchema: false,",
 				"     umask: 0022,",
