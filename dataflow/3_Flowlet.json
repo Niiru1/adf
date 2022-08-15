@@ -1,26 +1,10 @@
 {
-	"name": "3_AttributionsLocationsErrors",
+	"name": "3_Flowlet",
 	"properties": {
-		"type": "MappingDataFlow",
+		"type": "Flowlet",
 		"typeProperties": {
-			"sources": [
-				{
-					"dataset": {
-						"referenceName": "Attributions_Raw_Csv",
-						"type": "DatasetReference"
-					},
-					"name": "AttributionsRaw"
-				}
-			],
-			"sinks": [
-				{
-					"dataset": {
-						"referenceName": "outputFolder",
-						"type": "DatasetReference"
-					},
-					"name": "sink2"
-				}
-			],
+			"sources": [],
+			"sinks": [],
 			"transformations": [
 				{
 					"name": "FilterEmptyRows"
@@ -32,17 +16,14 @@
 					"name": "LocationsFilter"
 				},
 				{
-					"name": "aggregate14"
+					"name": "AttributionsRaw"
 				},
 				{
-					"name": "derivedColumn1"
-				},
-				{
-					"name": "derivedColumn2"
+					"name": "output2"
 				}
 			],
 			"scriptLines": [
-				"source(output(",
+				"input(output(",
 				"          {Incident Category Group} as string,",
 				"          {Incident Category Group Description} as string,",
 				"          {Responsible Organisation Full Name} as string,",
@@ -161,9 +142,7 @@
 				"          {Financial Period Number} as string,",
 				"          {Planned Origin WTT Datetime - React} as string",
 				"     ),",
-				"     allowSchemaDrift: true,",
-				"     validateSchema: false,",
-				"     ignoreNoFilesFound: false) ~> AttributionsRaw",
+				"     order: 0) ~> AttributionsRaw",
 				"AttributionsRaw filter(!isNull({Event Datetime})) ~> FilterEmptyRows",
 				"FilterEmptyRows select(mapColumn(",
 				"          each(match(/* All input columns */ true()),",
@@ -175,21 +154,7 @@
 				"     skipDuplicateMapInputs: true,",
 				"     skipDuplicateMapOutputs: true) ~> select1",
 				"select1 filter(rlike({Planned Dest Location Code - Affected}, '66433') || rlike({Planned Dest Location Code - Affected}, '40024')  || rlike({Planned Dest Location Code - Affected}, '63033')  || rlike({Planned Dest Location Code - Affected}, '59014') || rlike({Planned Dest Location Code - Affected}, '66233')  || rlike({Planned Dest Location Code - Affected}, '43050')  || rlike({Planned Dest Location Code - Affected}, '66395')  || rlike({Planned Dest Location Code - Affected}, '36182') || rlike({Planned Dest Location Code - Affected}, '36153') || rlike({Planned Dest Location Code - Affected}, '66397') || rlike({Planned Dest Location Code - Affected}, '65086') ) ~> LocationsFilter",
-				"derivedColumn2 aggregate({Planned Dest Location Code - Resp} = count(),",
-				"          {Total Time Lost (Hrs)} = sum({Length of Time Hrs}),",
-				"          {Time Lost Max} = max({Length of Time Hrs}),",
-				"          {Incident Number} = max({Incident Number}),",
-				"          {Attribution Area Description} = max({Attribution Area Description}),",
-				"          {Incident Reason} = max({Incident Reason Description})) ~> aggregate14",
-				"LocationsFilter derive({Length of Time} = divide(toInteger({Incident Duration}), 60)) ~> derivedColumn1",
-				"derivedColumn1 derive({Length of Time Hrs} = toDecimal({Length of Time})) ~> derivedColumn2",
-				"LocationsFilter sink(allowSchemaDrift: true,",
-				"     validateSchema: false,",
-				"     umask: 0022,",
-				"     preCommands: [],",
-				"     postCommands: [],",
-				"     skipDuplicateMapInputs: true,",
-				"     skipDuplicateMapOutputs: true) ~> sink2"
+				"LocationsFilter output() ~> output2"
 			]
 		}
 	}
