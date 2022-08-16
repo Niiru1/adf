@@ -16,7 +16,7 @@
 						"referenceName": "MoviesDB",
 						"type": "DatasetReference"
 					},
-					"name": "source1"
+					"name": "MoviesDB2"
 				}
 			],
 			"sinks": [
@@ -36,7 +36,7 @@
 						"referenceName": "MoviesSink",
 						"type": "DatasetReference"
 					},
-					"name": "sink1"
+					"name": "MoviesSink2"
 				}
 			],
 			"transformations": [
@@ -50,10 +50,10 @@
 					"name": "CountUnique"
 				},
 				{
-					"name": "filter1"
+					"name": "FilterGreaterThan1"
 				},
 				{
-					"name": "select1"
+					"name": "SelectAllGreaterThan1"
 				}
 			],
 			"scriptLines": [
@@ -78,20 +78,20 @@
 				"     ),",
 				"     allowSchemaDrift: true,",
 				"     validateSchema: false,",
-				"     ignoreNoFilesFound: false) ~> source1",
+				"     ignoreNoFilesFound: false) ~> MoviesDB2",
 				"MoviesDB filter(toInteger(year) >= 1910 && toInteger(year) <= 2000 && rlike(genres, 'Comedy')) ~> filterComedy",
 				"filterComedy aggregate(groupBy(year),",
 				"     AverageComedyRating = avg(toInteger(Rating)),",
 				"          MaxRaing = max(toInteger(Rating)),",
 				"          MaxRottenTomatoRating = max(toInteger(RottenTomato)),",
 				"          Count = count(1)) ~> AggregateComedyRating",
-				"source1 aggregate(groupBy(title),",
+				"MoviesDB2 aggregate(groupBy(title),",
 				"     countunique = count(),",
 				"          maxyear = max(year),",
 				"          minyear = min(year),",
 				"          genres = max(genres)) ~> CountUnique",
-				"CountUnique filter(toInteger(countunique) > 1) ~> filter1",
-				"filter1 select(mapColumn(",
+				"CountUnique filter(toInteger(countunique) > 1) ~> FilterGreaterThan1",
+				"FilterGreaterThan1 select(mapColumn(",
 				"          title,",
 				"          countunique,",
 				"          maxyear,",
@@ -99,7 +99,7 @@
 				"          genres",
 				"     ),",
 				"     skipDuplicateMapInputs: true,",
-				"     skipDuplicateMapOutputs: true) ~> select1",
+				"     skipDuplicateMapOutputs: true) ~> SelectAllGreaterThan1",
 				"AggregateComedyRating sink(allowSchemaDrift: true,",
 				"     validateSchema: false,",
 				"     partitionFileNames:['MoviesDB Average Ratings'],",
@@ -116,13 +116,13 @@
 				"          MaxRottenTomatoRating",
 				"     ),",
 				"     partitionBy('hash', 1)) ~> MoviesSink",
-				"select1 sink(allowSchemaDrift: true,",
+				"SelectAllGreaterThan1 sink(allowSchemaDrift: true,",
 				"     validateSchema: false,",
 				"     umask: 0022,",
 				"     preCommands: [],",
 				"     postCommands: [],",
 				"     skipDuplicateMapInputs: true,",
-				"     skipDuplicateMapOutputs: true) ~> sink1"
+				"     skipDuplicateMapOutputs: true) ~> MoviesSink2"
 			]
 		}
 	}
