@@ -1,5 +1,5 @@
 {
-	"name": "TransformMovies",
+	"name": "2_TransformMovies",
 	"properties": {
 		"type": "MappingDataFlow",
 		"typeProperties": {
@@ -47,7 +47,7 @@
 				"     ignoreNoFilesFound: false) ~> MoviesDB",
 				"MoviesDB filter(toInteger(year) >= 1910 && toInteger(year) <= 2000 && rlike(genres, 'Comedy')) ~> filter1",
 				"filter1 aggregate(groupBy(year),",
-				"     AggregateComedyRating = avg(toInteger(Rating))) ~> AggregateComedyRating",
+				"     AverageComedyRating = avg(toInteger(Rating))) ~> AggregateComedyRating",
 				"AggregateComedyRating sink(allowSchemaDrift: true,",
 				"     validateSchema: false,",
 				"     partitionFileNames:['MoviesDB Average Ratings'],",
@@ -58,7 +58,7 @@
 				"     skipDuplicateMapOutputs: true,",
 				"     mapColumn(",
 				"          year,",
-				"          AggregateComedyRating",
+				"          AggregateComedyRating = AverageComedyRating",
 				"     ),",
 				"     partitionBy('hash', 1)) ~> MoviesSink"
 			]

@@ -16,7 +16,7 @@
 				"userProperties": [],
 				"typeProperties": {
 					"dataflow": {
-						"referenceName": "TransformMovies",
+						"referenceName": "2_TransformMovies",
 						"type": "DataFlowReference"
 					},
 					"compute": {

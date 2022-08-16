@@ -1,0 +1,39 @@
+{
+	"name": "2_TransformMoviesFlowlet",
+	"properties": {
+		"type": "Flowlet",
+		"typeProperties": {
+			"sources": [],
+			"sinks": [],
+			"transformations": [
+				{
+					"name": "filter1"
+				},
+				{
+					"name": "AggregateComedyRating"
+				},
+				{
+					"name": "MoviesDB"
+				},
+				{
+					"name": "MoviesSink"
+				}
+			],
+			"scriptLines": [
+				"input(output(",
+				"          movie as string,",
+				"          title as string,",
+				"          genres as string,",
+				"          year as string,",
+				"          Rating as string,",
+				"          RottenTomato as string",
+				"     ),",
+				"     order: 0) ~> MoviesDB",
+				"MoviesDB filter(toInteger(year) >= 1910 && toInteger(year) <= 2000 && rlike(genres, 'Comedy')) ~> filter1",
+				"filter1 aggregate(groupBy(year),",
+				"     AverageComedyRating = avg(toInteger(Rating))) ~> AggregateComedyRating",
+				"AggregateComedyRating output() ~> MoviesSink"
+			]
+		}
+	}
+}
