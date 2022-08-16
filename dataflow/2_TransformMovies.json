@@ -27,7 +27,7 @@
 			],
 			"transformations": [
 				{
-					"name": "filter1"
+					"name": "filterComedy"
 				},
 				{
 					"name": "AggregateComedyRating"
@@ -45,9 +45,12 @@
 				"     allowSchemaDrift: true,",
 				"     validateSchema: false,",
 				"     ignoreNoFilesFound: false) ~> MoviesDB",
-				"MoviesDB filter(toInteger(year) >= 1910 && toInteger(year) <= 2000 && rlike(genres, 'Comedy')) ~> filter1",
-				"filter1 aggregate(groupBy(year),",
-				"     AverageComedyRating = avg(toInteger(Rating))) ~> AggregateComedyRating",
+				"MoviesDB filter(toInteger(year) >= 1910 && toInteger(year) <= 2000 && rlike(genres, 'Comedy')) ~> filterComedy",
+				"filterComedy aggregate(groupBy(year),",
+				"     AverageComedyRating = avg(toInteger(Rating)),",
+				"          MaxRaing = max(toInteger(Rating)),",
+				"          MaxRottenTomatoRating = max(toInteger(RottenTomato)),",
+				"          Count = count(1)) ~> AggregateComedyRating",
 				"AggregateComedyRating sink(allowSchemaDrift: true,",
 				"     validateSchema: false,",
 				"     partitionFileNames:['MoviesDB Average Ratings'],",
@@ -58,7 +61,10 @@
 				"     skipDuplicateMapOutputs: true,",
 				"     mapColumn(",
 				"          year,",
-				"          AggregateComedyRating = AverageComedyRating",
+				"          AggregateComedyRating = AverageComedyRating,",
+				"          Count,",
+				"          MaxRaing,",
+				"          MaxRottenTomatoRating",
 				"     ),",
 				"     partitionBy('hash', 1)) ~> MoviesSink"
 			]
