@@ -18,7 +18,7 @@
 						"referenceName": "MoviesSink",
 						"type": "DatasetReference"
 					},
-					"name": "sink1"
+					"name": "MoviesSink"
 				}
 			],
 			"transformations": [
@@ -57,7 +57,7 @@
 				"     preCommands: [],",
 				"     postCommands: [],",
 				"     skipDuplicateMapInputs: true,",
-				"     skipDuplicateMapOutputs: true) ~> sink1"
+				"     skipDuplicateMapOutputs: true) ~> MoviesSink"
 			]
 		}
 	}
