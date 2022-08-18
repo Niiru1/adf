@@ -9,7 +9,7 @@
 						"referenceName": "MoviesDB",
 						"type": "DatasetReference"
 					},
-					"name": "source1"
+					"name": "Movies"
 				}
 			],
 			"sinks": [
@@ -23,7 +23,7 @@
 			],
 			"transformations": [
 				{
-					"name": "flowlet1",
+					"name": "TransformMoviesFlowlet",
 					"flowlet": {
 						"referenceName": "2_TransformMoviesFlowlet",
 						"type": "DataFlowReference"
@@ -41,8 +41,8 @@
 				"     ),",
 				"     allowSchemaDrift: true,",
 				"     validateSchema: false,",
-				"     ignoreNoFilesFound: false) ~> source1",
-				"source1 compose(mapColumn(",
+				"     ignoreNoFilesFound: false) ~> Movies",
+				"Movies compose(mapColumn(",
 				"          movie,",
 				"          title,",
 				"          genres,",
@@ -50,8 +50,8 @@
 				"          Rating,",
 				"          RottenTomato",
 				"     ),",
-				"     composition: '2_TransformMoviesFlowlet') ~> flowlet1@(MoviesSink)",
-				"flowlet1@MoviesSink sink(allowSchemaDrift: true,",
+				"     composition: '2_TransformMoviesFlowlet') ~> TransformMoviesFlowlet@(MoviesSink)",
+				"TransformMoviesFlowlet@MoviesSink sink(allowSchemaDrift: true,",
 				"     validateSchema: false,",
 				"     umask: 0022,",
 				"     preCommands: [],",
